@@ -48,19 +48,20 @@ public class FaseUm extends Fase {
             graficos.drawImage(fundo, 0, 0, null);
             graficos.drawImage(personagem.getImagem(), personagem.getPosicaoEmX(), personagem.getPosicaoEmY(), this);
 
-            // Recuperar a nossa lista de tiros (getTiros) e atribuímos para uma variável
-            // local chamada tiros.
             ArrayList<Tiro> tiros = personagem.getTiros();
+            ArrayList<TiroSuper> especiais = personagem.getEspeciais();
 
-            // Criando um laço de repetição (foreach). Iremos percorrer toda a lista.
             for (Tiro tiro : tiros) {
-                // Desenhar o tiro na nossa tela.
+                
                 graficos.drawImage(tiro.getImagem(), tiro.getPosicaoEmX(), tiro.getPosicaoEmY(), this);
             }
 
-            // Criando um laço de repetição (foreach). Iremos percorrer toda a lista.
+            for (TiroSuper especial : especiais) {
+                graficos.drawImage(especial.getImagem(), especial.getPosicaoEmX(), especial.getPosicaoEmY(), this);
+            }
+            
             for (Inimigo inimigo : inimigos) {
-                // Desenhar o inimigo na nossa tela.
+                
                 graficos.drawImage(inimigo.getImagem(), inimigo.getPosicaoEmX(), inimigo.getPosicaoEmY(), this);
             }
         } else {
@@ -76,6 +77,11 @@ public class FaseUm extends Fase {
             personagem.atirar();
         else
             personagem.mover(e);
+        
+        if (e.getKeyCode() == KeyEvent.VK_Q)
+            personagem.soltar();
+        else
+            personagem.mover(e);
     }
 
     @Override
@@ -87,22 +93,23 @@ public class FaseUm extends Fase {
     public void actionPerformed(ActionEvent e) {
         personagem.atualizar();
 
-        // Recuperar a nossa lista de tiros (getTiros) e atribuímos para uma variável
-        // local chamada tiros.
         ArrayList<Tiro> tiros = personagem.getTiros();
+        ArrayList<TiroSuper> especiais = personagem.getEspeciais();
 
-        // Criando um laço de repetição (for). Iremos percorrer toda a lista.
         for (int i = 0; i < tiros.size(); i++) {
-            // Obter o objeto tiro da posicao i do ArrayList
             Tiro tiro = tiros.get(i);
-            // Verificar se (if) a posição do x (tiro.getPosicaoEmX()) é maior do que a
-            // largura da nossa janela
             if (tiro.getPosicaoEmX() > Principal.LARGURA_DA_JANELA || !tiro.getEhVisivel())
-                // Remover da lista se estiver fora do campo de visão (LARGURA_DA_JANELA)
                 tiros.remove(tiro);
             else
-                // Atualizar a posição do tiro.
                 tiro.atualizar();
+        }
+
+        for (int j = 0; j < especiais.size(); j++) {
+            TiroSuper especial = especiais.get(j);
+            if (especial.getPosicaoEmX() > Principal.LARGURA_DA_JANELA || !especial.getEhVisivel())
+                especiais.remove(especial);
+            else
+                especial.atualizar();
         }
 
         // Criando um laço de repetição (for). Iremos percorrer toda a lista.
@@ -142,6 +149,12 @@ public class FaseUm extends Fase {
                     inimigo.setEhVisivel(false);
                     tiro.setEhVisivel(false);
                 }
+            }
+            ArrayList<TiroSuper> especiais = this.personagem.getEspeciais();
+            for (int k = 0; k < especiais.size(); k++) {
+                TiroSuper especial = especiais.get(k);
+                Rectangle formaEspecial = especial.getRectangle();
+                
             }
         }
     }

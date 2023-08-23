@@ -14,12 +14,14 @@ public class Personagem extends ElementoGrafico {
     private int deslocamentoEmY;
 
     private ArrayList<Tiro> tiros;
+    private ArrayList<TiroSuper> especiais;
 
     public Personagem() {
         this.carregar();
         super.setPosicaoEmX(POSICAO_INICIAL_EM_X);
         super.setPosicaoEmY(POSICAO_INICIAL_EM_Y);
         this.tiros = new ArrayList<Tiro>();
+        this.especiais = new ArrayList<TiroSuper>();
     }
 
     public void carregar() {
@@ -37,6 +39,15 @@ public class Personagem extends ElementoGrafico {
         int meioDaNave = super.getPosicaoEmY() + (super.getAlturaImagem() / 2);
         Tiro tiro = new Tiro(frenteDaNave, meioDaNave);
         this.tiros.add(tiro);
+        TiroSuper especial = new TiroSuper(frenteDaNave, meioDaNave);
+        this.especiais.add(especial);
+    }
+
+    public void soltar() {
+        int frenteDaNave = super.getPosicaoEmX() + super.getLarguraImagem();
+        int meioDaNave = super.getPosicaoEmY() + (super.getAlturaImagem() / 2);
+        TiroSuper especial = new TiroSuper(frenteDaNave, meioDaNave);
+        this.especiais.add(especial);
     }
 
     public void mover(KeyEvent tecla) {
@@ -52,6 +63,18 @@ public class Personagem extends ElementoGrafico {
                 this.deslocamentoEmX = -DESLOCAMENTO;
                 break;
             case KeyEvent.VK_RIGHT:
+                this.deslocamentoEmX = DESLOCAMENTO;
+                break;
+            case KeyEvent.VK_W:
+                this.deslocamentoEmY = -DESLOCAMENTO;
+                break;
+            case KeyEvent.VK_S:
+                this.deslocamentoEmY = DESLOCAMENTO;
+                break;
+            case KeyEvent.VK_A:
+                this.deslocamentoEmX = -DESLOCAMENTO;
+                break;
+            case KeyEvent.VK_D:
                 this.deslocamentoEmX = DESLOCAMENTO;
                 break;
             default:
@@ -72,6 +95,18 @@ public class Personagem extends ElementoGrafico {
                 deslocamentoEmX = 0;
                 break;
             case KeyEvent.VK_RIGHT:
+                deslocamentoEmX = 0;
+                break;
+            case KeyEvent.VK_W:
+                deslocamentoEmY = 0;
+                break;
+            case KeyEvent.VK_S:
+                deslocamentoEmY = 0;
+                break;
+            case KeyEvent.VK_A:
+                deslocamentoEmX = 0;
+                break;
+            case KeyEvent.VK_D:
                 deslocamentoEmX = 0;
                 break;
             default:
@@ -97,5 +132,13 @@ public class Personagem extends ElementoGrafico {
 
     public void setTiros(ArrayList<Tiro> tiros) {
         this.tiros = tiros;
+    }
+
+    public ArrayList<TiroSuper> getEspeciais() {
+        return this.especiais;
+    }
+
+    public void setEspeciais(ArrayList<TiroSuper> especiais) {
+        this.especiais = especiais;
     }
 }
